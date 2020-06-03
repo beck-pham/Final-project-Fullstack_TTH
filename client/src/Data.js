@@ -30,10 +30,11 @@ export default class Data {
 
     return fetch(url, options);
   }
+
   /**
-   * The getUser() and createUser() methods perform the async operations that create and get an authenticated user of our app, using the api() method.
-   * getUser() makes a GET request to the /users endpoint, and returns a JSON object containing user credentials
-   * createUser() makes a POST request, sending new user data to the /users endpoint.
+   * Retrieves an authenticated user from the database.
+   * @param { users email } emailAddress
+   * @param { users password } password
    */
   async getUser(emailAddress, password) {
     const response = await this.api(`/users`, "GET", null, true, {
@@ -49,6 +50,10 @@ export default class Data {
     }
   }
 
+  /**
+   *  Creates a new user in the database.
+   * @param { user } user
+   */
   async createUser(user) {
     const response = await this.api("/users", "POST", user);
     if (response.status === 201) {
@@ -64,7 +69,7 @@ export default class Data {
   }
 
   /**
-   * COURSE METHOD
+   * Gets all the courses stored in the the database as well the course owners information.
    */
   async getCourses() {
     const response = await this.api("/courses");
@@ -75,6 +80,10 @@ export default class Data {
     }
   }
 
+  /**
+   *  Gets a single course and its details from the database and the course owner information.
+   * @param { course id } id
+   */
   async getSingleCourse(id) {
     const response = await this.api(`/courses/${id}`);
     if (response.status === 200) {
@@ -91,6 +100,12 @@ export default class Data {
     }
   }
 
+  /**
+   * Creates a new course and ties it to the user who created the course.
+   * @param { new course } course
+   * @param { course owner email } emailAddress
+   * @param { course owner password } password
+   */
   async createCourse(course, emailAddress, password) {
     const response = await this.api("/courses", "POST", course, true, {
       emailAddress,
@@ -108,6 +123,12 @@ export default class Data {
     }
   }
 
+  /**
+   * Updates an existing course. Course can only be updated by the user who created it.
+   * @param { updated course } course
+   * @param { course owners email } emailAddress
+   * @param { course owners password } password
+   */
   async updateCourse(course, emailAddress, password) {
     const response = await this.api(
       `/courses/${course.id}`,
@@ -133,6 +154,12 @@ export default class Data {
     }
   }
 
+  /**
+   * Sends a delete request to the database to delete a course.
+   * @param { course to be deleted } course
+   * @param { users email } emailAddress
+   * @param { users password } password
+   */
   async deleteCourse(course, emailAddress, password) {
     const response = await this.api(
       `/courses/${course.id}`,
